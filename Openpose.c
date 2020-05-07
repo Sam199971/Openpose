@@ -13,7 +13,10 @@
 
 //dirty hacks for higher than implementation
 double coor_x[100][8]={[0 ... 99][0 ... 7] = 16384}, coor_y[100][8]={[0 ... 99][0 ... 7] = 16384}, coor_int[100][8]={[0 ... 99][0 ... 7] = 16384};
-int lefthand[100]={[0 ... 99] = 0},righthand[100]={[0 ... 99] = 0}, hand_int[100]={[0 ... 99] = 0},leftleg[100]={[0 ... 99] = 0},rightleg[100]={[0 ... 99] = 0},posture0[100]={[0 ... 99] = 0},posture1_x[100]={[0 ... 99] = 0},posture1_y[100]={[0 ... 99] = 0}, posture2[100]={[0 ... 99] = 0},posture3_x[100]={[0 ... 99] = 0},posture3_y[100]={[0 ... 99] = 0};
+int lefthand[100]={[0 ... 99] = 0},righthand[100]={[0 ... 99] = 0}, hand_int[100]={[0 ... 99] = 0},leftleg[100]={[0 ... 99] = 0},rightleg[100]={[0 ... 99] = 0};
+int posture0[100]={[0 ... 99] = 0},posture1_x[100]={[0 ... 99] = 0},posture1_y[100]={[0 ... 99] = 0};
+int posture2[100]={[0 ... 99] = 0};
+int posture3_x[100]={[0 ... 99] = 0},posture3_y[100]={[0 ... 99] = 0};
 //implement if needed
 //double coor_x_old[100][4]={0}, coor_y_old[100][4]={0};
 
