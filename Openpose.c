@@ -157,9 +157,9 @@ static void spit(json_value* value, int x, int y){
 
 static void coorx(json_value* value, int x, int y){
 	char* part_name=body_parts(x);
-	//doing YOLO
-	//if(coor_x[num][y]!=0)coor_x_old[num][y]=coor_x[num][y];
+	
 	coor_x[num][y]=value->u.dbl;
+	
 	printf("x: %d, coor_x[%d][%d] = %f\n",x/3,num,y,coor_x[num][y]);
 	printf("Person[%d] %s xcoor=%f, x=%d\n",num,part_name,coor_x[num][y],x);
 	
@@ -167,27 +167,11 @@ static void coorx(json_value* value, int x, int y){
 }
 static void coory(json_value* value, int x, int y){
 char* part_name=body_parts(x);
-	//char* part_name=body_parts(x);
-	//YOLO
-    //if(coor_y[num][y]!=0)coor_y_old[num][y]=coor_y[num][y];
+
     coor_y[num][y]=value->u.dbl;
         
-        
 	
-        //printf("x2=%f, x3=%f, x5=%f, x6=%f\n",coor_x[num][0],coor_x[num][1],coor_x[num][2],coor_x[num][3]);
-	// 判斷手舉起來
-     /*   if(coor_y[num][0]-coor_y[num][1]>0.5)righthand[num]=1;
-	if(coor_y[num][2]-coor_y[num][3]>0.5)lefthand[num]=1;
-	
-        // 判斷腳舉起來
-        if(coor_y[num][4]-coor_y[num][5]>0.5)rightleg[num]=1;
-	if(coor_y[num][6]-coor_y[num][7]>0.5)leftleg[num]=1;
-	*/
-	
-	//if(coor_y[num][0]>0 && coor_y[num][1]>0)posture0[num]=1;
-
-	
-        printf("y: %d, coor_y[%d][%d] = %f\n",x/3,num,y,coor_y[num][y]);
+    printf("y: %d, coor_y[%d][%d] = %f\n",x/3,num,y,coor_y[num][y]);
 	printf("Person[%d] %s ycoor=%f, x=%d\n",num,part_name,coor_y[num][y],x);
 }
 
