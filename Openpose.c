@@ -12,11 +12,8 @@
 #endif
 
 //dirty hacks for higher than implementation
-double coor_x[100][8]={[0 ... 99][0 ... 7] = 16384}, coor_y[100][8]={[0 ... 99][0 ... 7] = 16384}, coor_int[100][8]={[0 ... 99][0 ... 7] = 16384};
-int lefthand[100]={[0 ... 99] = 0},righthand[100]={[0 ... 99] = 0}, hand_int[100]={[0 ... 99] = 0},leftleg[100]={[0 ... 99] = 0},rightleg[100]={[0 ... 99] = 0};
-int posture0[100]={[0 ... 99] = 0},posture1_x[100]={[0 ... 99] = 0},posture1_y[100]={[0 ... 99] = 0};
-int posture2[100]={[0 ... 99] = 0};
-int posture3_x[100]={[0 ... 99] = 0},posture3_y[100]={[0 ... 99] = 0};
+double coor_x[100][75]={[0 ... 99][0 ... 74] = 1}, coor_y[100][75]={[0 ... 99][0 ... 74] = 1};
+int lefthand[100]={[0 ... 99] = 0},righthand[100]={[0 ... 99] = 0}, hand_int[100]={[0 ... 99] = 0},leftleg[100]={[0 ... 99] = 0},rightleg[100]={[0 ... 99] = 0},posture0[100]={[0 ... 99] = 0},posture1_x[100]={[0 ... 99] = 0},posture1_y[100]={[0 ... 99] = 0}, posture2[100]={[0 ... 99] = 0},posture3_x[100]={[0 ... 99] = 0},posture3_y[100]={[0 ... 99] = 0};
 //implement if needed
 //double coor_x_old[100][4]={0}, coor_y_old[100][4]={0};
 
@@ -101,9 +98,12 @@ static void process_value(json_value* value, int depth, int x)
                         //printf("double: %f\n", value->u.dbl);
 					if(x==0)num++;
 					//printf("%d\n",x);
+                                        
 
-                                        //判斷身體的點位右手：2 3 左手：5 6 右腳：8 9 左腳:11 12
-					if(x/3==2 || x/3==3 || x/3==5 || x/3==6 || x/3==9 || x/3==10 || x/3==12 || x/3==13){ 						
+                                        spit(value, x, x);
+
+                                        //判斷身體的點位右手：2 3 左手：5 6 右腳：9 10 左腳:12 13
+					/*if(x/3==2 || x/3==3 || x/3==5 || x/3==6 || x/3==9 || x/3==10 || x/3==12 || x/3==13){ 						
                                                  switch(x/3){
 							case 2:spit(value, x, 0);break;
 							case 3:spit(value, x, 1);break;
@@ -113,9 +113,11 @@ static void process_value(json_value* value, int depth, int x)
 							case 10:spit(value, x, 5);break;
 							case 12:spit(value, x, 6);break;
 							case 13:spit(value, x, 7);break;
+							case 4:spit(value, x, 8);break;
+							
 							default:break;
 						}
-					}
+					}*/
 					//if(num > num_old){
 						//printf("hooman[%d], y2=%f, y3=%f, y5=%f, y6=%f\n",num,coor_y[num][0],coor_y[num][1],coor_y[num][2],coor_y[num][3]);
 						//num_old++;
@@ -129,15 +131,119 @@ static void process_value(json_value* value, int depth, int x)
                         break;
         }
 }
-char* body_parts(int x){
-	switch(x/3){
-		case 2:return "RShoulder";
-		case 3:return "RElbow";
-		case 5:return "LShoulder";
-		case 6:return "LElbow";
-		default:return "Unimplemented";
-	}
+
+
+
+static void coorx(json_value* value, int x, int y){
+        
+	coor_x[num][y/3]=value->u.dbl;
+        
+        //printf("x %d = %f\n", y, coor_x[num][y]);
+	
 }
+static void coory(json_value* value, int x, int y){
+
+        coor_y[num][y/3]=value->u.dbl;
+        
+        //printf("y %d = %f\n", y, coor_y[num][y]);
+}
+
+static void output(){
+
+        int P1_right_leg = 0, P1_left_leg = 0, P3_right_leg = 0, P3_left_leg = 0;
+
+	if(num==0)return;
+
+        //printf("==DEBUG== Human[%d], x2=%f, x3=%f, x5=%f, x6=%f ==DEBUG==\n",num,coor_x[num][2],coor_x[num][3],coor_x[num][5],coor_x[num][6]);
+	//printf("==DEBUG== Human[%d], x9=%f, x10=%f, x12=%f, x13=%f ==DEBUG==\n",num,coor_x[num][9],coor_x[num][10],coor_x[num][12],coor_x[num][13]);
+
+        
+        //printf("==DEBUG== Human[%d], x2=%f, x3=%f, x5=%f, x6=%f ==DEBUG==\n",num,coor_x[num][2],coor_x[num][3],coor_x[num][5],coor_x[num][6]);
+	//printf("==DEBUG== Human[%d], x9=%f, x10=%f, x12=%f, x13=%f ==DEBUG==\n",num,coor_x[num][9],coor_x[num][10],coor_x[num][12],coor_x[num][12]);
+
+	//DO SOMETHING HERE!!!!!!
+	result = time(NULL);
+	
+
+        // x 軸的判斷
+        // 姿勢一
+	if((coor_x[num][13]-coor_x[num][12] < 30 && coor_x[num][13]-coor_x[num][12] > -30) || (coor_x[num][9]-coor_x[num][10] < 30 && coor_x[num][9]-coor_x[num][10] > -30)){//左/右腳垂直
+            if((coor_y[num][11] < coor_y[num][13])  || (coor_y[num][14] < coor_y[num][10])){// 左/右腳高於令一隻腳 
+                if(coor_y[num][10]-coor_y[num][9]<150 && coor_y[num][10]-coor_y[num][9]>-50){// 右腳抬高
+                    if(coor_y[num][4] < coor_y[num][2] && coor_y[num][7] < coor_y[num][5]){// 雙手舉高
+                        printf("人類 %d 舉起了雙手跟右腳  姿勢一正確@ %s！\n", num, ctime(&result));
+                     }
+                }
+                else if(coor_y[num][13]-coor_y[num][12]<150 && coor_y[num][13]-coor_y[num][12]>-50){// 左腳抬高
+                    if(coor_y[num][4] < coor_y[num][2] && coor_y[num][7] < coor_y[num][5]){// 雙手舉高
+                        printf("人類 %d 舉起了雙手跟右腳  姿勢一正確@ %s！\n", num, ctime(&result));
+                     }
+                }
+             }
+        }
+
+
+        // 姿勢二 
+
+
+        if((coor_y[num][14]-coor_y[num][4] < 20 && coor_x[num][14]-coor_x[num][4] < 20) || (coor_y[num][11]-coor_y[num][7] < 20 && coor_x[num][11]-coor_x[num][7] < 20)){
+            if(coor_y[num][1]-coor_y[num][8] < 80 ){
+                if(coor_x[num][7]-coor_x[num][4] < 40 && coor_x[num][7]-coor_x[num][4] > -40){
+                    printf("人類 %d 姿勢二正確 %s\n", num, ctime(&result));
+
+
+                 }
+
+            }
+        
+
+        }
+
+
+
+
+	//姿勢三
+	if(coor_x[num][13]-coor_x[num][12]>70 || coor_x[num][6]-coor_x[num][5]>70){// 左/右腳要斜得 
+            if(coor_y[num][9]-coor_y[num][10]<30 && coor_y[num][9]-coor_y[num][10]>-30){//右腳要平的
+                if(coor_y[num][2]-coor_y[num][3]<30 && coor_y[num][2]-coor_y[num][3]>-30 && coor_y[num][5]-coor_y[num][6]<30 && coor_y[num][5]-coor_y[num][6]>-30){//雙手水平
+                    printf("人類 %d 手平舉並且右大腿水平  姿勢三正確@ %s！\n", num, ctime(&result));
+                }
+            }
+            else if(coor_y[num][13]-coor_y[num][12]<30 && coor_y[num][13]-coor_y[num][12]>-30){//左腳要平的
+                if(coor_y[num][2]-coor_y[num][3]<30 && coor_y[num][2]-coor_y[num][3]>-30 && coor_y[num][5]-coor_y[num][6]<30 && coor_y[num][5]-coor_y[num][6]>-30){//雙手水平
+                    printf("人類 %d 手平舉並且左大腿水平  姿勢三正確@ %s！\n", num, ctime(&result));
+                }
+            }
+	}
+
+/*
+        // y 軸的判斷
+        // 姿勢一
+        
+        if(coor_y[num][10]-coor_y[num][9]<150 && coor_y[num][10]-coor_y[num][9]>-50) P1_right_leg = 1;
+  
+        if(coor_y[num][13]-coor_y[num][12]<150 && coor_y[num][13]-coor_y[num][12]>-50) P1_left_leg = 1;
+
+        if(coor_y[num][9]-coor_y[num][10]<30 && coor_y[num][9]-coor_y[num][10]>-30) P3_right_leg = 1;
+        if(coor_y[num][13]-coor_y[num][12]<30 && coor_y[num][13]-coor_y[num][12]>-30) P3_right_leg = 1;
+
+
+
+	if(posture1_x[num] == 1 && coor_y[num][2]-coor_y[num][3]>20 && coor_y[num][5]-coor_y[num][6]>20 && (P1_right_leg || P1_left_leg) )posture1_y[num]=1;	
+	//姿勢三
+	if(posture3_x[num] == 1 && coor_y[num][2]-coor_y[num][3]<30 && coor_y[num][2]-coor_y[num][3]>-30 && coor_y[num][5]-coor_y[num][6]<30 && coor_y[num][5]-coor_y[num][6]>-30 && (P1_right_leg || P1_left_leg) )posture3_y[num]=1;
+
+
+        printf("\n");
+
+	if(posture1_x[num] == 1 && posture1_y[num] == 1)printf("人類 %d 舉起了雙手跟右腳  姿勢一正確@ %s！\n", num, ctime(&result));
+	//if(posture2[num])printf("人類 %d 姿勢二正確@ %s！\n", num, ctime(&result));
+	if(posture3_x[num] == 1 && posture3_y[num] == 1)printf("人類 %d 手平舉並且右大腿水平  姿勢三正確@ %s！\n", num, ctime(&result));
+
+*/
+	
+}
+
 
 static void spit(json_value* value, int x, int y){
 	switch(x%3){
@@ -151,71 +257,10 @@ static void spit(json_value* value, int x, int y){
 			   break;
 		default:break;
 	}
+
+
+
 }
-
-
-
-static void coorx(json_value* value, int x, int y){
-	char* part_name=body_parts(x);
-	
-	coor_x[num][y]=value->u.dbl;
-	
-	printf("x: %d, coor_x[%d][%d] = %f\n",x/3,num,y,coor_x[num][y]);
-	printf("Person[%d] %s xcoor=%f, x=%d\n",num,part_name,coor_x[num][y],x);
-	
-	
-}
-static void coory(json_value* value, int x, int y){
-char* part_name=body_parts(x);
-
-    coor_y[num][y]=value->u.dbl;
-        
-	
-    printf("y: %d, coor_y[%d][%d] = %f\n",x/3,num,y,coor_y[num][y]);
-	printf("Person[%d] %s ycoor=%f, x=%d\n",num,part_name,coor_y[num][y],x);
-}
-
-static void output(){
-	if(num==0)return;
-
-        printf("==DEBUG== Human[%d], x2=%f, x3=%f, x5=%f, x6=%f ==DEBUG==\n",num,coor_x[num][0],coor_x[num][1],coor_x[num][2],coor_x[num][3]);
-	printf("==DEBUG== Human[%d], x8=%f, x9=%f, x11=%f, x12=%f ==DEBUG==\n",num,coor_x[num][4],coor_x[num][5],coor_x[num][6],coor_x[num][7]);
-
-
-        printf("==DEBUG== Human[%d], y2=%f, y3=%f, y5=%f, y6=%f ==DEBUG==\n",num,coor_y[num][0],coor_y[num][1],coor_y[num][2],coor_y[num][3]);
-	printf("==DEBUG== Human[%d], y8=%f, y9=%f, y11=%f, y12=%f ==DEBUG==\n",num,coor_y[num][4],coor_y[num][5],coor_y[num][6],coor_y[num][7]);
-
-	//DO SOMETHING HERE!!!!!!
-	result = time(NULL);
-	
-
-        // x 軸的判斷
-        // 姿勢一
-	if((coor_x[num][7]-coor_x[num][6] < 10 && coor_x[num][7]-coor_x[num][6] > -10) || (coor_x[num][5]-coor_x[num][4] < 10 && coor_x[num][5]-coor_x[num][4] > -10))posture1_x[num] = 1;
-
-        // 姿勢二 
-	if(coor_x[num][1]-coor_x[num][0] < 10 && coor_x[num][1]-coor_x[num][0] > -10 && coor_x[num][3]-coor_x[num][2] < 10 && coor_x[num][3]-coor_x[num][2] > -10)posture2[num]=1;
-	//姿勢三
-	if(coor_x[num][7]-coor_x[num][6]>30 || coor_x[num][4]-coor_x[num][5]>30){
-		posture3_x[num] = 1;
-                printf("get posture3_x\n");
-	}
-
-
-        // y 軸的判斷
-        // 姿勢一
-	if(posture1_x[num] == 1 && coor_y[num][0]-coor_y[num][1]>20 && coor_y[num][2]-coor_y[num][3]>20 && coor_y[num][5]-coor_y[num][4]<150 && coor_y[num][5]-coor_y[num][4]>-50 )posture1_y[num]=1;	
-	//姿勢三
-	if(posture3_x[num] == 1 && coor_y[num][0]-coor_y[num][1]<10 && coor_y[num][0]-coor_y[num][1]>-10 && coor_y[num][2]-coor_y[num][3]<10 && coor_y[num][2]-coor_y[num][3]>-10 && coor_y[num][4]-coor_y[num][5]<20 && coor_y[num][4]-coor_y[num][5]>-20/* || (coor_y[num][4]-coor_y[num][5]<20 && coor_y[num][4]-coor_y[num][5]>-20))*/)posture3_y[num]=1;
-
-
-	if(posture1_x[num] == 1 && posture1_y[num] == 1)printf("人類 %d 舉起了雙手跟右腳  姿勢一正確@ %s！\n", num, ctime(&result));
-	if(posture2[num])printf("人類 %d 姿勢二正確@ %s！\n", num, ctime(&result));
-	if(posture3_x[num] == 1 && posture3_y[num] == 1)printf("人類 %d 手平舉並且右大腿水平  姿勢三正確@ %s！\n", num, ctime(&result));
-	
-}
-
-
 
 
 int main(int argc, char** argv){
@@ -292,9 +337,9 @@ int main(int argc, char** argv){
 			#endif
 			*/
 		    // 刪掉filename 並把value初始化
-			//remove(filename);
+			remove(filename);
 			for(int l=0; l<=num; l++){
-				for(int n=0; n<8; n++){
+				for(int n=0; n<25; n++){
 					coor_y[l][n] = 16384.0;
 					coor_x[l][n] = 16384.0;
 				}
